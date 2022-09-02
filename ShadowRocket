@@ -1,0 +1,66 @@
+[General]
+dns-server = 223.5.5.5, 119.29.29.29, https://doh.pub/dns-query, https://223.5.5.5/dns-query
+bypass-tun = 10.0.0.0/8, 100.64.0.0/10, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.0.0.0/24, 192.0.2.0/24, 192.168.0.0/16, 192.88.99.0/24, 198.18.0.0/15, 198.51.100.0/24, 203.0.113.0/24, 224.0.0.0/4, 255.255.255.255/32
+skip-proxy = localhost, *.local, injections.adguard.org, local.adguard.org, captive.apple.com, guzzoni.apple.com, 0.0.0.0/8, 10.0.0.0/8, 17.0.0.0/8, 100.64.0.0/10, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.0.0.0/24, 192.0.2.0/24, 192.168.0.0/16, 192.88.99.0/24, 198.18.0.0/15, 198.51.100.0/24, 203.0.113.0/24, 224.0.0.0/4, 240.0.0.0/4, 255.255.255.255/32
+bypass-system = true
+ipv6 = true
+
+[Rule]
+# 本地
+host-suffix, 178.com, direct
+host-keyword, okggrss, direct
+host, pwczhongtian.cn, direct
+host-keyword, pwczhongtian, direct
+host-suffix, ghproxy.com, direct
+host-suffix, wikipedia.org, proxy
+host-suffix, twimg.com, proxy
+host-suffix, twitter.com, proxy
+host-suffix, ltaaa.com, proxy
+host-suffix, jingxi.com, direct
+host-keyword, icloud.com, direct
+host-keyword, apple.com, direct
+host-keyword, githubusercontent, proxy
+host-keyword, ggok, direct
+host-keyword, 115, direct
+
+#链接
+RULE-SET, https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/XueQiu/XueQiu.list, DIRECT
+RULE-SET, https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list, REJECT
+RULE-SET, https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/Guard/Advertising.list, REJECT
+RULE-SET, https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Privacy/Privacy.list, REJECT
+RULE-SET, https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Hijacking/Hijacking.list, REJECT
+RULE-SET, https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Telegram/Telegram.list, PROXY
+RULE-SET, https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/GlobalMedia/GlobalMedia.list, PROXY
+RULE-SET, https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/China/China.list, DIRECT
+RULE-SET, https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list, PROXY
+IP-ASN, https://raw.githubusercontent.com/VirgilClyne/VirgilClyne/main/modules/ASN/ASN.China.list, DIRECT
+FINAL,Proxy
+
+[Host]
+localhost = 127.0.0.1
+
+[URL Rewrite]
+# Sub_Store
+^https?:\/\/sub\.store url script-analyze-echo-response https://raw.githubusercontent.com/Peng-YM/Sub-Store/master/backend/sub-store.min.js
+
+# 微信链接和去广告
+^https?:\/\/mp\.weixin\.qq\.com\/mp\/getappmsgad url script-response-body https://raw.githubusercontent.com/NobyDa/Script/master/QuantumultX/File/Wechat.js
+
+# 比价
+^http://.+/amdc/mobileDispatch url script-request-body https://service.2ti.st/QuanX/Script/jd_tb_price/main.js
+^https?://trade-acs\.m\.taobao\.com/gw/mtop\.taobao\.detail\.getdetail url script-response-body https://service.2ti.st/QuanX/Script/jd_tb_price/main.js
+
+# 本地复写规则
+https:\/\/api\.m\.jd\.com\/client\.action.*functionId=signBean url script-request-header https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js
+
+# 请开启 MITM 并在域名中加入 www.google.cn
+^https?://(www.)?(g|google).cn https://www.google.com 302
+(?<=_region=)CN(?=&) JP 307
+(?<=&mcc_mnc=)4 2 307
+^(https?:\/\/(tnc|dm)[\w-]+\.\w+\.com\/.+)(\?)(.+) $1$3 302
+(^https?:\/\/*\.\w{4}okv.com\/.+&.+)(\d{2}\.3\.\d)(.+) $118.0$3 302
+
+[MITM]
+hostname = *.tiktokv.com,*.byteoversea.com,*.tik-tokapi.com, sub.store, www.youtube.com, api.m.jd.com, api.bilibili.com, -*.pstatp.com, -*.amemv.com, -aweme.snssdk.com, youhui.95516.com, 
+crazy-joy.jd.com, api.m.jd.com, daojia.jd.com, wq.jd.com, jdjoy.jd.com, draw.jdfcloud.com, proapi.115.com, as.xiaojukeji.com, common.diditaxi.com.cn, *.baidu.com, m.jingxi.com, 
+game.xiaojukeji.com, trade-acs.m.taobao.com, amdc.m.taobao.com, mp.weixin.qq.com, weixin110.qq.com, ms.jr.jd.com, -*.qq.com, *google.cn
